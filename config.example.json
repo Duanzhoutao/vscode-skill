@@ -1,0 +1,30 @@
+{
+  "_comment": "Copy this file to your config location (Windows: %APPDATA%\\vscode-skill\\config.json; macOS/Linux: $XDG_CONFIG_HOME/vscode-skill/config.json or ~/.config/vscode-skill/config.json) and uncomment/edit the values you need. All keys are optional.",
+  "product": "auto",
+  "tempDir": null,
+  "products": {
+    "vscode": {
+      "cliPath": "C:\\Users\\you\\scoop\\apps\\vscode\\current\\bin\\code.cmd"
+    },
+    "vscode-insiders": {
+      "cliPath": "C:\\Users\\you\\scoop\\apps\\vscode-insiders\\current\\bin\\code-insiders.cmd"
+    },
+    "cursor": {
+      "cliPath": "C:\\Users\\you\\AppData\\Local\\Programs\\cursor\\bin\\cursor.cmd",
+      "userDataPath": "C:\\Users\\you\\AppData\\Roaming\\Cursor\\User",
+      "extensionsPath": "C:\\Users\\you\\.cursor\\extensions"
+    },
+    "vscodium": {
+      "cliPath": "C:\\Users\\you\\scoop\\apps\\vscodium\\current\\bin\\codium.cmd",
+      "userDataPath": "C:\\Users\\you\\AppData\\Roaming\\VSCodium\\User",
+      "extensionsPath": "C:\\Users\\you\\.vscode-oss\\extensions"
+    }
+  },
+  "ssh": {
+    "defaultHost": "localhost",
+    "defaultUser": "you"
+  },
+  "wsl": {
+    "defaultDistro": "Ubuntu-24.04"
+  }
+}
