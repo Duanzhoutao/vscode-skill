@@ -16,6 +16,7 @@ All notable changes to this skill are documented in this file. The format is bas
 
 - `agents/openai.yaml`, `SKILL.md`, and config examples now emphasize explicit `products.<slug>` configuration for non-built-in products.
 - The safe test runner now checks that generic products fail clearly when not configured and work against a temporary configured product stub.
+- The safe test runner now uses temporary fake CLIs and per-skill scratch directories for baseline checks, so `--basic` works on clean CI runners without a preinstalled VS Code CLI and can run concurrently across package copies.
 
 ## [1.1.0] - 2026-06-20
 
