@@ -187,6 +187,41 @@ def basic_tests(results: list[dict[str, Any]], scratch: Path) -> None:
     add(results, run_vscode_cli("ext", "list", "--Product", "auto", name="ext list auto", timeout=90))
     add(results, run_vscode_cli("settings", "path", "--Product", "vscode", name="settings path vscode"))
     add(results, run_vscode_cli("settings", "get", "--Product", "vscode", name="settings get vscode"))
+    add(results, run_vscode_cli("settings", "path", "--Product", "codebuddy-cn", name="generic product requires configured path", expect_ok=False))
+
+    generic_cli = scratch / "fake-codebuddy.cmd"
+    generic_cli.write_text("@echo off\r\necho Fake CodeBuddy CLI 0.0.0\r\n", encoding="utf-8")
+    generic_user = scratch / "CodeBuddy CN" / "User"
+    generic_ext = scratch / ".codebuddycn" / "extensions"
+    generic_user.mkdir(parents=True, exist_ok=True)
+    generic_ext.mkdir(parents=True, exist_ok=True)
+    generic_config = scratch / "generic-product-config.json"
+    generic_config.write_text(
+        json.dumps(
+            {
+                "product": "codebuddy-cn",
+                "products": {
+                    "codebuddy-cn": {
+                        "cliPath": str(generic_cli),
+                        "userDataPath": str(generic_user),
+                        "extensionsPath": str(generic_ext),
+                    }
+                },
+            },
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
+    original_config = os.environ.get("VSCODE_SKILL_CONFIG")
+    os.environ["VSCODE_SKILL_CONFIG"] = str(generic_config)
+    try:
+        add(results, run_vscode_cli("settings", "path", "--Product", "codebuddy-cn", name="generic product configured settings path"))
+        add(results, run_vscode_cli("info", None, "--Product", "codebuddy-cn", name="generic product configured info"))
+    finally:
+        if original_config is None:
+            os.environ.pop("VSCODE_SKILL_CONFIG", None)
+        else:
+            os.environ["VSCODE_SKILL_CONFIG"] = original_config
 
     project = scratch / "project-settings-smoke"
     project.mkdir(parents=True, exist_ok=True)

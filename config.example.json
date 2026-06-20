@@ -10,7 +10,7 @@
       "cliPath": "C:\\Users\\you\\scoop\\apps\\vscode-insiders\\current\\bin\\code-insiders.cmd"
     },
     "cursor": {
-      "cliPath": "C:\\Users\\you\\AppData\\Local\\Programs\\cursor\\bin\\cursor.cmd",
+      "cliPath": "C:\\Users\\you\\AppData\\Local\\Programs\\cursor\\resources\\app\\bin\\cursor.cmd",
       "userDataPath": "C:\\Users\\you\\AppData\\Roaming\\Cursor\\User",
       "extensionsPath": "C:\\Users\\you\\.cursor\\extensions"
     },
@@ -18,6 +18,24 @@
       "cliPath": "C:\\Users\\you\\scoop\\apps\\vscodium\\current\\bin\\codium.cmd",
       "userDataPath": "C:\\Users\\you\\AppData\\Roaming\\VSCodium\\User",
       "extensionsPath": "C:\\Users\\you\\.vscode-oss\\extensions"
+    },
+    "trae-cn": {
+      "_note": "Example only. Configure the actual Trae CLI path on your machine before using --Product trae-cn.",
+      "cliPath": "C:\\Users\\you\\AppData\\Local\\Programs\\Trae CN\\bin\\trae-cn.cmd",
+      "userDataPath": "C:\\Users\\you\\AppData\\Roaming\\Trae CN\\User",
+      "extensionsPath": "C:\\Users\\you\\.trae-cn\\extensions"
+    },
+    "qoder": {
+      "_note": "VS Code-compatible editor/configuration surface only; proprietary Qoder AI features are out of scope.",
+      "cliPath": "C:\\Users\\you\\AppData\\Local\\Programs\\Qoder\\bin\\qoder.cmd",
+      "userDataPath": "C:\\Users\\you\\AppData\\Roaming\\Qoder\\User",
+      "extensionsPath": "C:\\Users\\you\\.qoder\\extensions"
+    },
+    "codebuddy-cn": {
+      "_note": "VS Code-compatible editor/configuration surface only; proprietary CodeBuddy AI features and marketplace state are out of scope.",
+      "cliPath": "C:\\Users\\you\\AppData\\Local\\Programs\\CodeBuddy CN\\bin\\codebuddy.cmd",
+      "userDataPath": "C:\\Users\\you\\AppData\\Roaming\\CodeBuddy CN\\User",
+      "extensionsPath": "C:\\Users\\you\\.codebuddycn\\extensions"
     }
   },
   "ssh": {

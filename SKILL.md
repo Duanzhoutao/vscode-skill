@@ -1,11 +1,11 @@
 ---
 name: vscode
-description: "Configure and operate VS Code-family IDEs (VS Code, VS Code Insiders, Cursor, VSCodium) via CLI and structured JSON files. Handles settings.json (user and project scope), .vscode/{settings,tasks,launch,extensions}.json, keybindings.json, snippets, profiles, extensions, Python interpreter, SSH and WSL Remote. Uses environment variables and a config file for portable paths so the skill works on any machine. Trigger phrases: VS Code, VSCode, VS Code 配置, settings.json, .vscode, tasks.json, launch.json, keybindings.json, extensions.json, snippets, profiles, Cursor, VSCodium, Remote SSH, WSL, Python interpreter, VSIX, MCP, theme, font."
+description: "Configure and operate VS Code-family IDEs (VS Code, VS Code Insiders, Cursor, VSCodium, Trae, Qoder, CodeBuddy) via CLI and structured JSON files. Handles settings.json (user and project scope), .vscode/{settings,tasks,launch,extensions}.json, keybindings.json, snippets, profiles, extensions, Python interpreter, SSH and WSL Remote. Qoder and CodeBuddy support is limited to their VS Code-compatible configuration surface, not proprietary AI chat, accounts, models, agents, marketplaces, or internal state. Uses environment variables and a config file for portable paths so the skill works on any machine. Trigger phrases: VS Code, VSCode, VS Code 配置, settings.json, .vscode, tasks.json, launch.json, keybindings.json, extensions.json, snippets, profiles, Cursor, VSCodium, Trae, Qoder, CodeBuddy, Remote SSH, WSL, Python interpreter, VSIX, MCP, theme, font."
 ---
 
 # VS Code
 
-A portable skill for configuring and operating VS Code-family IDEs (VS Code, VS Code Insiders, Cursor, VSCodium) through the product CLI and structured JSON config files. Defaults use only standard locations; explicit paths are taken from environment variables and a config file so the skill can run on any machine without editing.
+A portable skill for configuring and operating VS Code-family IDEs (VS Code, VS Code Insiders, Cursor, VSCodium, Trae, Qoder, CodeBuddy) through the product CLI and structured JSON config files. Defaults use only standard locations; explicit paths are taken from environment variables and a config file so the skill can run on any machine without editing.
 
 > Platform note: **Cross-platform** via the Python gateway `scripts/vscode_skill.py`. On Windows it forwards to the PowerShell driver `vscode-cli.ps1` (the original implementation, 11/11 tests pass). On macOS and Linux it implements `info`, `ext list`, `settings path/get/set/smoke`, and `python set-interpreter` natively in Python; everything else shells out to your local `code` binary.
 
@@ -53,8 +53,21 @@ pwsh -File $PSScriptRoot\scripts\vscode-cli.ps1 ssh open `
 - `auto` (default): probe VS Code, then VS Code Insiders.
 - `vscode`: use `code` / `code.cmd`.
 - `vscode-insiders`: use `code-insiders` / `code-insiders.cmd`.
+- Any configured product slug such as `cursor`, `vscodium`, `trae-cn`, `qoder`, or `codebuddy-cn`: use `products.<slug>.cliPath`, `userDataPath`, and `extensionsPath` from the config file.
 
 Set the default product explicitly with `VSCODE_SKILL_PRODUCT` or via the config file (see [Configuration](#configuration)).
+
+## VS Code-Compatible Products
+
+Built-in auto-detection is strongest for VS Code and VS Code Insiders. Cursor, VSCodium, Trae, Qoder, and CodeBuddy are handled through the generic product configuration path unless their CLI is already discoverable through an environment-specific wrapper.
+
+This skill only claims the VS Code-compatible configuration surface for derived products:
+
+- User and project settings, including `.vscode/settings.json`.
+- Project `.vscode/tasks.json`, `.vscode/launch.json`, and `.vscode/extensions.json`.
+- Keybindings, snippets, profiles, extensions, templates, Python interpreter selection, and Remote-style open flows where the local product CLI supports them.
+
+Do not use this skill as support for proprietary AI chat, accounts, model settings, agent stores, product-specific marketplaces, hidden SQLite state, tokens, or internal runtime files. For Qoder and CodeBuddy in particular, keep support to the VS Code-compatible editor/configuration layer unless the user provides official product-specific documentation and asks for a separate adapter.
 
 ## Configuration
 
@@ -76,6 +89,7 @@ Paths and per-machine preferences are resolved in this order:
 | `VSCODE_SKILL_PRODUCT` | Default `--Product` value | `auto` |
 | `VSCODE_CODE_CLI` | Explicit path to VS Code CLI | auto-detected |
 | `VSCODE_INSIDERS_CLI` | Explicit path to VS Code Insiders CLI | auto-detected |
+| `VSCODE_EXTENSIONS_DIR` | Override extension install dir for any product | product default or config |
 | `VSCODE_USER_DATA` | Override user data dir (rare) | platform default |
 
 ### Config File Schema
@@ -92,6 +106,31 @@ Copy `config.example.json` from the skill root to your config location and edit.
     },
     "vscode-insiders": {
       "cliPath": "C:\\Users\\you\\scoop\\apps\\vscode-insiders\\current\\bin\\code-insiders.cmd"
+    },
+    "cursor": {
+      "cliPath": "C:\\Users\\you\\AppData\\Local\\Programs\\cursor\\resources\\app\\bin\\cursor.cmd",
+      "userDataPath": "C:\\Users\\you\\AppData\\Roaming\\Cursor\\User",
+      "extensionsPath": "C:\\Users\\you\\.cursor\\extensions"
+    },
+    "vscodium": {
+      "cliPath": "C:\\Users\\you\\scoop\\apps\\vscodium\\current\\bin\\codium.cmd",
+      "userDataPath": "C:\\Users\\you\\AppData\\Roaming\\VSCodium\\User",
+      "extensionsPath": "C:\\Users\\you\\.vscode-oss\\extensions"
+    },
+    "trae-cn": {
+      "cliPath": "C:\\Users\\you\\AppData\\Local\\Programs\\Trae CN\\bin\\trae-cn.cmd",
+      "userDataPath": "C:\\Users\\you\\AppData\\Roaming\\Trae CN\\User",
+      "extensionsPath": "C:\\Users\\you\\.trae-cn\\extensions"
+    },
+    "qoder": {
+      "cliPath": "C:\\Users\\you\\AppData\\Local\\Programs\\Qoder\\bin\\qoder.cmd",
+      "userDataPath": "C:\\Users\\you\\AppData\\Roaming\\Qoder\\User",
+      "extensionsPath": "C:\\Users\\you\\.qoder\\extensions"
+    },
+    "codebuddy-cn": {
+      "cliPath": "C:\\Users\\you\\AppData\\Local\\Programs\\CodeBuddy CN\\bin\\codebuddy.cmd",
+      "userDataPath": "C:\\Users\\you\\AppData\\Roaming\\CodeBuddy CN\\User",
+      "extensionsPath": "C:\\Users\\you\\.codebuddycn\\extensions"
     }
   },
   "ssh": {
@@ -173,7 +212,7 @@ pwsh -File scripts/vscode-cli.ps1 wsl list
 pwsh -File scripts/vscode-cli.ps1 wsl open --Distro Ubuntu-24.04 --LinuxPath /home/user/project
 ```
 
-CLI resolution order: explicit env (`VSCODE_CODE_CLI` / `VSCODE_INSIDERS_CLI`) → `config.products.<product>.cliPath` → `Get-Command code.cmd` (PATH) → `Get-Command code` (PATH) → `%LOCALAPPDATA%\Programs\Microsoft VS Code\bin\code.cmd` (Windows default).
+CLI resolution order: explicit env (`VSCODE_CODE_CLI` / `VSCODE_INSIDERS_CLI`) → `config.products.<product>.cliPath` → `Get-Command code.cmd` (PATH) → `Get-Command code` (PATH) → `%LOCALAPPDATA%\Programs\Microsoft VS Code\bin\code.cmd` (Windows default). Generic products fail clearly when `products.<product>.cliPath` is absent; they are never silently mapped to VS Code.
 
 ## Templates and Bundled Content
 

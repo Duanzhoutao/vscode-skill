@@ -23,5 +23,20 @@
     "id": "config-init",
     "prompt": "帮我生成一份 skill 配置文件。",
     "expected": "运行 scripts/init-config.ps1；输出实际写入的路径；提示用户编辑后重启 agent 才会生效。"
+  },
+  {
+    "id": "trae-compatible-config",
+    "prompt": "帮我检查 Trae CN 的 VS Code 配置路径和项目 .vscode/settings.json，不要动聊天记录和模型设置。",
+    "expected": "使用 --Product trae-cn 或 products.trae-cn 配置；只处理 VS Code-compatible settings/.vscode/extension 路径；不读取或修改 chat、model、account、agent、MCP、SQLite、token 或内部状态。"
+  },
+  {
+    "id": "qoder-config-boundary",
+    "prompt": "把 Qoder 项目的保存时格式化和 tasks.json 配好。",
+    "expected": "明确 Qoder 仅按 VS Code-compatible 配置面处理；要求/使用 products.qoder.cliPath、userDataPath、extensionsPath；写项目 .vscode/settings.json/tasks.json；不声称支持 Qoder 私有 AI/账号/模型能力。"
+  },
+  {
+    "id": "codebuddy-config-boundary",
+    "prompt": "帮我在 CodeBuddy CN 里推荐 Python 扩展并设置项目解释器。",
+    "expected": "使用 products.codebuddy-cn 配置或要求用户提供 CLI 路径；只处理 extensions.json、扩展安装/定位、python.defaultInterpreterPath 等 VS Code-compatible 内容；不碰 CodeBuddy marketplace、skills、models、agent 或账号状态。"
   }
 ]

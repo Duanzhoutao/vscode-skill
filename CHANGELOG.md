@@ -2,6 +2,21 @@
 
 All notable changes to this skill are documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2026-06-20
+
+### Added
+
+- Expanded VS Code-family coverage language to include Trae, Qoder, and CodeBuddy alongside VS Code, VS Code Insiders, Cursor, and VSCodium.
+- Added a VS Code-compatible products section clarifying that Qoder and CodeBuddy support is limited to editor/configuration surfaces: settings, `.vscode/*`, extensions, keybindings, snippets, profiles, tasks/launch templates, Python interpreter setup, and Remote-style workflows where the local CLI supports them.
+- Added example generic product configuration stanzas for `trae-cn`, `qoder`, and `codebuddy-cn`.
+- Rewrote `references/vscode-config-files.md` in English with a product matrix and conservative path hints.
+- Added test prompts for Trae, Qoder, and CodeBuddy boundary behavior.
+
+### Changed
+
+- `agents/openai.yaml`, `SKILL.md`, and config examples now emphasize explicit `products.<slug>` configuration for non-built-in products.
+- The safe test runner now checks that generic products fail clearly when not configured and work against a temporary configured product stub.
+
 ## [1.1.0] - 2026-06-20
 
 ### Added
