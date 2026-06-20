@@ -48,7 +48,7 @@ jobs:
               throw "SKILL.md frontmatter missing required key: $key"
             }
           }
-          if ($front -match "(?m)^name\s*:\s*['\"]?([^'\"\s]+)") {
+          if ($front -match '(?m)^name\s*:\s*["'']?([^"''\s]+)') {
             $name = $Matches[1].Trim()
             if ($name -cnotmatch '^[a-z0-9][a-z0-9\-]*$') {
               throw "SKILL.md name '$name' must be lowercase ASCII slug."
