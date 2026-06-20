@@ -59,7 +59,18 @@ jobs:
       - name: Validate agents/openai.yaml
         shell: pwsh
         run: |
-          python -X utf8 -c "import yaml,sys; d=yaml.safe_load(open('agents/openai.yaml',encoding='utf-8')); assert 'interface' in d and 'display_name' in d['interface'], 'missing display_name'; print('openai.yaml OK')"
+          $content = Get-Content -LiteralPath "agents/openai.yaml" -Encoding UTF8 -Raw
+          foreach ($pattern in @(
+            '(?m)^interface\s*:',
+            '(?m)^\s+display_name\s*:',
+            '(?m)^\s+short_description\s*:',
+            '(?m)^\s+default_prompt\s*:'
+          )) {
+            if ($content -notmatch $pattern) {
+              throw "agents/openai.yaml missing expected pattern: $pattern"
+            }
+          }
+          Write-Host "openai.yaml OK"
 
       - name: Parse-check PowerShell scripts
         shell: pwsh
